@@ -1,22 +1,29 @@
 package ds
 
-type Stack struct {
+import "fmt"
+
+type Queue struct {
     list LinkedList
 }
 
-func (s *Stack) Push(value string) {
+func (q *Queue) Push(value string) {
         var tempNode Node
         tempNode.data = value
-        tempNode.Next = s.list.Head
-        s.list.Head = &tempNode
-        s.list.Size++
-} // add new head node
-func (s *Stack) Pop() (string, bool) {
-        if s.list.Size == 0 {
-                return "No", false
+        if q.list.Size == 0 {
+                q.list.Head = &tempNode
+                q.list.Tail = &tempNode
+        } else {
+                q.list.Tail.Next = &tempNode
+                q.list.Tail = &tempNode
         }
-	temp := s.list.Head.data
-        s.list.Head = s.list.Head.Next
-        s.list.Size--
-        return temp, true
+	q.list.Size++
+}// add tail node
+func (q *Queue) Pop() (string, error) {
+        if q.list.Size == 0 {
+                return "No", fmt.Errorf("List is Empty")
+        } 
+	temp := q.list.Head.data
+        q.list.Head = q.list.Head.Next
+        q.list.Size--
+        return temp, nil
 }// remove the head
